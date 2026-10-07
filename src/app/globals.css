@@ -1,0 +1,193 @@
+@import url('https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Tiro+Bangla:ital@0;1&family=Amiri:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-bangla: 'Tiro Bangla', serif;
+  --font-heading: 'Hind Siliguri', 'SolaimanLipi', sans-serif;
+  --font-arabic: 'Amiri', 'Traditional Arabic', serif;
+}
+
+/* সাহাদাত ভাইয়ের নির্দেশিত ফন্ট কম্বিনেশন: সব সাধারণ লেখা Tiro Bangla */
+body {
+  font-family: 'Tiro Bangla', 'SolaimanLipi', serif;
+  background-color: #f8fafc;
+  color: #0f172a;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button, input, select, textarea, table {
+  font-family: inherit;
+}
+
+/* এবং সকল হেডলাইন / শিরোনাম হবে Hind Siliguri (হিমশ) */
+h1, h2, h3, h4, h5, h6, 
+.font-headline, 
+.font-heading,
+.font-title {
+  font-family: 'Hind Siliguri', 'SolaimanLipi', sans-serif !important;
+}
+
+.font-hind {
+  font-family: 'Hind Siliguri', 'SolaimanLipi', 'Kalpurush', sans-serif !important;
+}
+
+.font-tiro {
+  font-family: 'Tiro Bangla', serif !important;
+}
+
+.font-noto {
+  font-family: 'Noto Sans Bengali', sans-serif !important;
+}
+
+.font-anek {
+  font-family: 'Anek Bangla', sans-serif !important;
+}
+
+.font-solaiman {
+  font-family: 'SolaimanLipi', sans-serif !important;
+}
+
+.font-kalpurush {
+  font-family: 'Kalpurush', sans-serif !important;
+}
+
+/* Print Styles for A4 and Thermal POS */
+@media print {
+  *, *::before, *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  @page {
+    margin: 6mm 8mm;
+    size: auto;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-family: 'Tiro Bangla', serif !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-heading, .font-headline, .font-title {
+    font-family: 'Hind Siliguri', sans-serif !important;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  /* Thermal Receipt Mode */
+  .thermal-receipt {
+    width: 80mm !important;
+    padding: 2mm !important;
+    font-size: 11px !important;
+    margin: 0 auto !important;
+  }
+
+  /* A4 Half-page Mode */
+  .a4-receipt {
+    width: 100% !important;
+    max-width: 210mm !important;
+    margin: 0 auto !important;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Animations for Royal Islamic UI */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.shimmer-text {
+  background: linear-gradient(90deg, #d97706, #fef08a, #d97706);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+
+@keyframes entranceFade {
+  0% { opacity: 0; transform: translateY(20px) scale(0.97); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes fadeSlideUp {
+  0% { 
+    opacity: 0; 
+    transform: translateY(22px);
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0);
+  }
+}
+
+.animate-entrance {
+  animation: entranceFade 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.anim-item-1 {
+  animation: fadeSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both;
+}
+
+.anim-item-2 {
+  animation: fadeSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.18s both;
+}
+
+.anim-item-3 {
+  animation: fadeSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.28s both;
+}
+
+.anim-item-4 {
+  animation: fadeSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.38s both;
+}
+
+.anim-item-5 {
+  animation: fadeSlideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.48s both;
+}
+

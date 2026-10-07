@@ -1,0 +1,122 @@
+// মাদ্রাসা ম্যানেজমেন্ট ও অটোমেশন সফটওয়্যার - প্রিজমা ডেটাবেস স্কিমা (PostgreSQL / SQLite)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Madrasa {
+  id              String         @id @default(cuid())
+  name            String
+  type            String         // qawmi, alia, combined
+  slug            String         @unique // e.g. darul-ulum-dhaka
+  address         String
+  phone           String
+  passwordHash    String?
+  eiinOrBefaqCode String?
+  logoUrl         String?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  classes         Class[]
+  students        Student[]
+  teachers        Teacher[]
+  transactions    Transaction[]
+}
+
+model Class {
+  id               String       @id @default(cuid())
+  madrasaId        String
+  name             String       // যেমন: নূরানী ১ম শ্রেণি, মিজান
+  division         String       // noorani, hifz, kitab, alia
+  sections         String[]     // ["শাখা ক", "শাখা খ"]
+  classTeacherName String?
+  createdAt        DateTime     @default(now())
+
+  madrasa          Madrasa      @relation(fields: [madrasaId], references: [id], onDelete: Cascade)
+  students         Student[]
+}
+
+model Student {
+  id                  String       @id // e.g. DARUL-2026-101
+  madrasaId           String
+  classId             String
+  roll                String       // 01, 02
+  name                String
+  englishName         String?
+  section             String
+  status              String       // residential (আবাসিক), non_residential (অনাবাসিক)
+  guardianName        String
+  guardianPhone       String
+  guardianPin         String       // 4-digit secret pin e.g. 1234
+  emergencyPhone      String?
+  address             String
+  bloodGroup          String?
+  currentLesson       String?      // যেমন: কায়দা পৃষ্ঠা ২৪
+  monthlyFee          Float        @default(0)
+  dueAmount           Float        @default(0)
+  isLillahScholarship Boolean      @default(false)
+  barcode             String       @unique
+  admissionDate       DateTime     @default(now())
+
+  madrasa             Madrasa      @relation(fields: [madrasaId], references: [id], onDelete: Cascade)
+  class               Class        @relation(fields: [classId], references: [id], onDelete: Cascade)
+  attendances         Attendance[]
+  feeReceipts         FeeReceipt[]
+}
+
+model Attendance {
+  id        String   @id @default(cuid())
+  studentId String
+  date      DateTime @default(now())
+  status    String   // present, absent, leave
+
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+}
+
+model FeeReceipt {
+  id            String   @id @default(cuid())
+  receiptNumber String   @unique // REC-1045
+  studentId     String
+  feeType       String   // যেমন: মাসিক বেতন ও বোর্ডিং ফি
+  totalAmount   Float
+  paidAmount    Float
+  dueBalance    Float
+  paymentMethod String   // cash, bkash, bank
+  collectedBy   String
+  createdAt     DateTime @default(now())
+
+  student       Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+}
+
+model Teacher {
+  id            String   @id @default(cuid())
+  madrasaId     String
+  name          String
+  designation   String   // মুহতামিম, শায়খুল হাদিস, নাজেমে তালিমাত ইত্যাদি
+  phone         String
+  classAssigned String?
+  qualification String?
+  salary        Float    @default(0)
+  joiningDate   DateTime @default(now())
+
+  madrasa       Madrasa  @relation(fields: [madrasaId], references: [id], onDelete: Cascade)
+}
+
+model Transaction {
+  id            String   @id @default(cuid())
+  madrasaId     String
+  type          String   // income, expense
+  category      String   // ছাত্রদের ফি, দান, বাজার খরচ, বেতন, বিল
+  fundType      String   @default("general") // general, lillah_zakat
+  amount        Float
+  description   String
+  receiptNumber String?
+  createdAt     DateTime @default(now())
+
+  madrasa       Madrasa  @relation(fields: [madrasaId], references: [id], onDelete: Cascade)
+}
